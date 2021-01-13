@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+
+    <!--Import Google Icon Font-->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <!--Import materialize.css-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <title>Telegram API</title>
+  </head>
+  <body>
+    <div class="class container">
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="col s3">
+              <form>
+                <!-- <label for="title">Akash Address</label> -->
+                <input
+                  type="text"
+                  name="title"
+                  id="telegramJson"
+                  placeholder="Telegram API json"
+                />
+                <button class="btn btn-primary submitJson">Submit</button>
+              </form>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div style="float: left; margin-right: 10px">
+        <table class="table">
+          <thead>
+            <tr scope="col s12">
+              Rolling Averages
+            </tr>
+            <tr>
+              <th scope="col s3">Hourly Messages</th>
+              <th scope="col s3">Daily Messages</th>
+              <th scope="col s3">Total Messages</th>
+              <th scope="col s3">New Users</th>
+              <th scope="col s3">Active Users</th>
+              <th scope="col s3">Daily Users</th>
+            </tr>
+          </thead>
+          <tbody class="apiTable">
+            <!-- Insert account rows here -->
+          </tbody>
+        </table>
+        <br />
+        <br />
+        <table class="table">
+          <thead>
+            <tr scope="col s12">
+              Time Series
+            </tr>
+            <tr>
+              <th scope="col s3">Date</th>
+              <th scope="col s3">Active Users</th>
+              <th scope="col s3">New Users</th>
+              <th scope="col s3">Total Users</th>
+              <th scope="col s3">Total Messages</th>
+            </tr>
+          </thead>
+          <tbody class="apiTimeSeries">
+            <!-- Insert account rows here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script type="text/javascript">
+      function timeFormat(isoTime) {
+        var time = new Date(isoTime)
+        return time.toLocaleDateString("en-US")
+      }
+
+      function showApi(apiData) {
+        let tr1 = document.createElement("tr")
+        tr1.innerHTML = `
+        <td>${apiData.hourly_messages}</td>
+        <td>${apiData.daily_messages}</td>
+        <td>${apiData.total_messages}</td>
+        <td>${apiData.new_users}</td>
+        <td>${apiData.active_users}</td>
+        <td>${apiData.daily_users}</td>
+        
+          `
+        // adds the table row to the page
+        document.querySelector(".apiTable").append(tr1)
+      }
+
+      function showApiTime(apiData) {
+        for (var i = 0; i < apiData.time_series.length; i++) {
+          let tr2 = document.createElement("tr")
+          for (var j = 0; j < apiData.time_series[i].length; j++) {
+            tr2.innerHTML = `
+          <td>${timeFormat(apiData.time_series[i][0])}</td>
+          <td>${apiData.time_series[i][j].a}</td>
+          <td>${apiData.time_series[i][j].n}</td>
+          <td>${apiData.time_series[i][j].s}</td>
+          <td>${apiData.time_series[i][j].m}</td>
+            `
+            // adds the table row to the page
+            document.querySelector(".apiTimeSeries").append(tr2)
+          }
+        }
+      }
+
+      document.querySelector(".submitJson").addEventListener("click", (e) => {
+        // prevents the form from automatically refreshing the page
+        e.preventDefault()
+        // grabs the text from the input
+        var apiData = JSON.parse(document.querySelector("#telegramJson").value)
+        showApi(apiData)
+        showApiTime(apiData)
+
+        // clears the input
+        document.querySelector("#telegramJson").value = ""
+      })
+    </script>
+  </body>
+</html>

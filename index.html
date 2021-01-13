@@ -52,12 +52,12 @@
               Rolling Averages
             </tr>
             <tr>
+              <th scope="col s3">Active Users</th>
+              <th scope="col s3">New Users</th>
+              <th scope="col s3">Daily Users</th>
               <th scope="col s3">Hourly Messages</th>
               <th scope="col s3">Daily Messages</th>
               <th scope="col s3">Total Messages</th>
-              <th scope="col s3">New Users</th>
-              <th scope="col s3">Active Users</th>
-              <th scope="col s3">Daily Users</th>
             </tr>
           </thead>
           <tbody class="apiTable">
@@ -76,7 +76,7 @@
               <th scope="col s3">Active Users</th>
               <th scope="col s3">New Users</th>
               <th scope="col s3">Total Users</th>
-              <th scope="col s3">Total Messages</th>
+              <th scope="col s3">Daily Messages</th>
             </tr>
           </thead>
           <tbody class="apiTimeSeries">
@@ -94,12 +94,12 @@
       function showApi(apiData) {
         let tr1 = document.createElement("tr")
         tr1.innerHTML = `
+        <td>${apiData.active_users}</td>
+        <td>${apiData.new_users}</td>
+        <td>${apiData.daily_users}</td>
         <td>${apiData.hourly_messages}</td>
         <td>${apiData.daily_messages}</td>
         <td>${apiData.total_messages}</td>
-        <td>${apiData.new_users}</td>
-        <td>${apiData.active_users}</td>
-        <td>${apiData.daily_users}</td>
         
           `
         // adds the table row to the page
@@ -107,7 +107,7 @@
       }
 
       function showApiTime(apiData) {
-        for (var i = 0; i < apiData.time_series.length; i++) {
+        for (var i = 0; i < apiData.time_series.length-1; i++) {
           let tr2 = document.createElement("tr")
           for (var j = 0; j < apiData.time_series[i].length; j++) {
             tr2.innerHTML = `
